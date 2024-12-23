@@ -6,6 +6,7 @@ import Button from "./button";
 import React from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const colors = [
   "#FF3B30",
@@ -64,6 +65,21 @@ export default function TaskEditor({
   };
   return (
     <div className="w-[96%] sm:w-3/4 mx-auto lg:w-3/5 xl:w-1/2 mt-10">
+      <Link href="/">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="currentColor"
+          className="size-6 fill-white mb-10 mt-13"
+        >
+          <path
+            fillRule="evenodd"
+            d="M11.03 3.97a.75.75 0 0 1 0 1.06l-6.22 6.22H21a.75.75 0 0 1 0 1.5H4.81l6.22 6.22a.75.75 0 1 1-1.06 1.06l-7.5-7.5a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 0 1 1.06 0Z"
+            clipRule="evenodd"
+          />
+        </svg>
+      </Link>
+
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <div className="flex flex-col gap-2">
           <label htmlFor="title" className="text-[#1E6F9F]">

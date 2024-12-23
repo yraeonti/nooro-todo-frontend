@@ -4,6 +4,7 @@ import { Checkbox } from "@headlessui/react";
 import axios from "axios";
 import { useState } from "react";
 import Link from "next/link";
+import DialogModal from "./dialog";
 
 interface Props {
   title: string;
@@ -16,12 +17,20 @@ interface Props {
 export default function Task({ title, completed, id, mutate, color }: Props) {
   const [enabled, setEnabled] = useState(false);
 
+  let [isOpen, setIsOpen] = useState(false);
+
   const updateCheck = async (completed: boolean) => {
     const resp = await axios.put(`${BASE_URL}/tasks/${id}`, {
       completed,
     });
 
-    console.log("update", resp);
+    if (resp.status === 200) {
+      mutate();
+    }
+  };
+
+  const deleteTask = async () => {
+    const resp = await axios.delete(`${BASE_URL}/tasks/${id}`);
 
     if (resp.status === 200) {
       mutate();
@@ -29,9 +38,12 @@ export default function Task({ title, completed, id, mutate, color }: Props) {
   };
 
   return (
-    <Link href={{ pathname: "/edit", query: { title, color, id } }}>
+    <>
       <div className="flex w-full bg-[#333333] py-5 px-3 md:px-5  my-3">
-        <div className="w-[85%] flex items-center gap-3 text-white">
+        <Link
+          href={{ pathname: "/edit", query: { title, color, id } }}
+          className="w-[85%] flex items-center gap-3 text-white"
+        >
           <Checkbox
             checked={enabled}
             onChange={(comp) => {
@@ -70,16 +82,19 @@ export default function Task({ title, completed, id, mutate, color }: Props) {
           >
             {title}
           </p>
-        </div>
+        </Link>
 
-        <div className="w-[15%] flex justify-end items-start">
+        <div
+          className="w-[15%] flex justify-end items-start"
+          onClick={() => setIsOpen(true)}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-4 stroke-[#808080]"
+            className="size-5 stroke-[#808080]"
           >
             <path
               strokeLinecap="round"
@@ -89,6 +104,23 @@ export default function Task({ title, completed, id, mutate, color }: Props) {
           </svg>
         </div>
       </div>
-    </Link>
+
+      <DialogModal
+        isOpen={isOpen}
+        setIsOpen={setIsOpen}
+        submitButton={
+          <button
+            className="inline-flex items-center gap-2 rounded-md bg-red-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+            onClick={() => {
+              deleteTask();
+              setIsOpen(false);
+            }}
+          >
+            Delete
+          </button>
+        }
+        text="Are you sure you want to delete this task?"
+      />
+    </>
   );
 }
