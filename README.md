@@ -11,9 +11,6 @@ This project contains the frontend implementation of the Nooro hiring task. The 
 ### Prerequisites
 
 - Ensure you have [VS Code](https://code.visualstudio.com/) and [Node.js](https://nodejs.org/) installed on your machine.
-- Install yarn if it’s not already installed:
-  ```bash
-  npm install -g yarn
 
 ## Running Project
 
