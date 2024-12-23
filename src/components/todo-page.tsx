@@ -64,7 +64,7 @@ export default function TodoPage() {
             <Loader key={i} className="h-20 w-20" />
           ))
         ) : data.data.length == 0 ? (
-          <div className="flex flex-col items-center gap-6">
+          <div className="flex flex-col items-center gap-6 text-white mt-20">
             <Image src="/clip.svg" alt="clip" width={56} height={56} />
 
             <p>You don't have any tasks registered yet.</p>
