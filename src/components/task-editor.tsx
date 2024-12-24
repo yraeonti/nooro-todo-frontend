@@ -41,6 +41,7 @@ export default function TaskEditor({
     handleSubmit,
     formState: { errors },
     setError,
+    clearErrors,
   } = useForm();
 
   console.log(color);
@@ -110,6 +111,7 @@ export default function TaskEditor({
                   <ColorBowl
                     bgColor={c}
                     setColor={setColor}
+                    clearError={clearErrors}
                     picked={color === c}
                   />
                 </React.Fragment>
@@ -132,13 +134,22 @@ export default function TaskEditor({
 interface PropsColorBowl {
   bgColor: string;
   picked?: boolean;
+  clearError: (arg?: any) => void;
   setColor: (col: string) => void;
 }
-const ColorBowl = ({ bgColor, picked, setColor }: PropsColorBowl) => {
+const ColorBowl = ({
+  bgColor,
+  picked,
+  setColor,
+  clearError,
+}: PropsColorBowl) => {
   return (
     <div
       style={{ borderRadius: "50%", backgroundColor: bgColor }}
-      onClick={() => setColor(bgColor)}
+      onClick={() => {
+        clearError && clearError();
+        setColor(bgColor);
+      }}
       className={cn("size-10", picked && "border-2 border-white")}
     ></div>
   );
